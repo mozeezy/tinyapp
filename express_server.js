@@ -2,18 +2,34 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
+const { request } = require("express");
 app.use(bodyParser.urlencoded({extended: true}));
 
 function generateRandomString() {
+  return "Yu57Ix";
 
-}
+};
+
+
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  // res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  const longURL = req.body.longURL;
+  urlDatabase.shortURL = longURL;
+  
+  const shortURL = generateRandomString();
+  urlDatabase[shortURL] = longURL;
+  console.log(urlDatabase);
+  res.redirect(`/urls/${shortURL}`)
 });
 
 app.set("view engine", "ejs");
+
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL]
+  res.redirect(longURL);
+});
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
