@@ -26,9 +26,15 @@ app.post("/urls", (req, res) => {
 
 app.set("view engine", "ejs");
 
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const shortURL = req.params.shortURL
+  delete urlDatabase[shortURL];
+  res.redirect("/urls");
+});
+
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL]
-  res.redirect(longURL);
+  const shortURL = req.params.shortURL
+  res.redirect(shortURL);
 });
 
 const urlDatabase = {
