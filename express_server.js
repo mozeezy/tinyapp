@@ -95,7 +95,6 @@ app.post("/register", (req, res) => {
   } else {
     const user_id = addUser(email, password);
     res.cookie("user_id", user_id);
-    console.log(users);
     res.redirect("/urls");
   }
 });
@@ -116,7 +115,6 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const templateVars = { user: users[req.cookies["user_id"]] };
-  console.log(users[req.cookies["user_id"]])
   res.render("urls_new", templateVars);
 });
 
@@ -144,7 +142,6 @@ for (let user in users) {
     res.redirect("/urls");   
     return;
   }
-  console.log("user email: ", users[user].email);
 }
   res.redirect("/login");
 });
@@ -157,12 +154,10 @@ app.post("/logout", (req, res) => {
 
     // --- setting post url routes.
 app.post("/urls", (req, res) => {
-      console.log(req.body);
       const longURL = req.body.longURL;
       urlDatabase.shortURL = longURL;
       const shortURL = generateRandomString();
       urlDatabase[shortURL] = longURL;
-      console.log(urlDatabase);
       res.redirect(`/urls/${shortURL}`);
     });
 
