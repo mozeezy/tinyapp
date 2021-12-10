@@ -150,10 +150,14 @@ app.get("/urls/:shortURL", (req, res) => {
   const userURLS = urlsForUser(userID);
   const templateVars = { urls: userURLS, 
     user: users[userID], 
-    shortURL: req.params.shortURL 
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL].longURL
   };
-  res.render("urls_show", templateVars)
-
+  if (req.cookies["user_id"] === urlDatabase[templateVars.shortURL].userID) {
+    res.render("urls_show", templateVars);
+  } else {
+    res.status(400).send("Access Denied: The link does not belong to this user.");
+  }
 });
   // --- adding login/ logout routes
 
@@ -192,15 +196,24 @@ app.post("/urls", (req, res) => {
     });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
-      const shortURL = req.params.shortURL;
-      delete urlDatabase[shortURL];
-      res.redirect("/urls");
-    });
+  const shortURL = req.params.shortURL;
+  if (req.cookies["user_id"] === urlDatabase[shortURL].userID) {
+    delete urlDatabase[req.params.shortURL];
+    res.redirect("/urls");
+  } else {
+    res.status(400).send("You must be logged in to delete that link!");
+  }
+});
+
 app.post("/urls/:shortURL", (req, res) => {
     const shortURL = req.params.shortURL;
     const longURL = req.body.longURL;
-    urlDatabase[shortURL].longURL = longURL;
-    res.redirect(`/urls/${shortURL}`);
+    if (req.cookies["user_id"] === urlDatabase[shortURL].userID) {
+      urlDatabase[shortURL].longURL = longURL;
+      res.redirect(`/urls/${shortURL}`);
+    } else {
+      res.status(400).send("You must be logged in to edit that link!")
+    }
   });
 
 // --- listening to port
