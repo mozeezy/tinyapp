@@ -24,8 +24,14 @@ function generateRandomString() {
 }
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  b6UTxQ: {
+      longURL: "https://www.tsn.ca",
+      userID: "aJ48lW"
+  },
+  i3BoGr: {
+      longURL: "https://www.google.ca",
+      userID: "aJ48lW"
+  }
 };
 
 const users = {
@@ -101,7 +107,10 @@ app.post("/register", (req, res) => {
 
 // --- / url routes
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  if(!urlDatabase[req.params.shortURL]) {
+    return res.send("Broken link");
+  }
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
@@ -115,14 +124,18 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const templateVars = { user: users[req.cookies["user_id"]] };
+  if (!req.cookies["user_id"] || !users[req.cookies["user_id"]]) {
+    res.redirect("/login");
+  }
   res.render("urls_new", templateVars);
+
 });
 
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]],
     shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
+    longURL: urlDatabase[req.params.shortURL].longURL,
   };
   res.render("urls_show", templateVars)
 
@@ -155,9 +168,11 @@ app.post("/logout", (req, res) => {
     // --- setting post url routes.
 app.post("/urls", (req, res) => {
       const longURL = req.body.longURL;
-      urlDatabase.shortURL = longURL;
       const shortURL = generateRandomString();
-      urlDatabase[shortURL] = longURL;
+      urlDatabase[shortURL] = {
+        longURL,
+        userID: req.cookies["user_id"]
+      };
       res.redirect(`/urls/${shortURL}`);
     });
 
@@ -169,7 +184,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:shortURL", (req, res) => {
     const shortURL = req.params.shortURL;
     const longURL = req.body.longURL;
-    urlDatabase[shortURL] = longURL;
+    urlDatabase[shortURL].longURL = longURL;
     res.redirect(`/urls/${shortURL}`);
   });
 
