@@ -4,9 +4,13 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["screenshot description"](#)
+!["Edit short URLs"](https://github.com/mozeezy/tinyapp/blob/master/docs/urls_edit.png?raw=true)
 
-!["screenshot description"](#)
+!["Main page"](https://github.com/mozeezy/tinyapp/blob/master/docs/urls_main.png?raw=true)
+
+!["Main page after login"](https://github.com/mozeezy/tinyapp/blob/master/docs/urls_main_loggedin.png?raw=true)
+
+!["Create new short URLs"](https://github.com/mozeezy/tinyapp/blob/master/docs/urls_new.png?raw=true)
 
 ## Dependencies
 
