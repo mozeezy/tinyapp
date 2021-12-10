@@ -7,17 +7,11 @@
 </head>
 
 <body>
+  <header>
+    <%- include('./partials/_header') %>
+  </header>
   <% if (user) { %>
     <% if (urls[shortURL]) { %>
-  <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-success">
-      <a class="navbar-brand" href="/urls">TinyApp</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-</header>
 <div class="card text-center">
   <div class="card-header"></div>
   <div class="card-body">
@@ -30,7 +24,7 @@
     <form method="POST"  action="/urls/<%= shortURL %>" method=POST>
       <label for="longURL">New URL:</label>
       <input class="form-control" type="text" name="longURL" placeholder="http://" style="margin: 1em">
-      <button type="submit" class="btn btn-primary">submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>
