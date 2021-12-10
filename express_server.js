@@ -192,11 +192,11 @@ app.get("/login", (req, res) => {
   });
 app.post("/login", (req, res) => {
 for (let user in users) {
-  if (req.body.email === users[user].email && req.body.password === users[user].password) {
+  if (req.body.email === users[user].email && bcrypt.compareSync(password, user.password)) {
     res.cookie("user_id", users[user].id); 
     res.redirect("/urls");   
     return;
-  }
+  } 
   res.send("Wrong credentials!")
 }
   res.redirect("/login");
