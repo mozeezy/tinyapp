@@ -26,6 +26,7 @@
     </header>
     <main style="margin: 1em;">
       <h3>My URLs</h3>
+      <% if(user) { %>
       <table class="table">        
         <thead>
           <tr>
@@ -54,9 +55,9 @@
             <% } %>
       </tbody>
     </table>
-    <% if(!user) { %>
+    <% } else { %>
       <p>Error: Register/ login first.</p>
-<% } %>
+    <% } %>
       </p>
     </p>
   </main>
